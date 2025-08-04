@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        .card-title {
+            color: #2d3436;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+        .form-control, .form-select {
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            padding: 0.8rem;
+            font-size: 0.95rem;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #6c5ce7;
+            box-shadow: 0 0 0 0.2rem rgba(108, 92, 231, 0.25);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #6c5ce7 0%, #a363d9 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 0.8rem 2rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
+        }
+        .summary-card {
+            background: linear-gradient(135deg, #6c5ce7 0%, #a363d9 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+        }
+        .category-badge {
+            background: linear-gradient(135deg, #6c5ce7 0%, #a363d9 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin: 0.25rem;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(108, 92, 231, 0.2);
+        }
+        .category-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(108, 92, 231, 0.3);
+        }
+        .category-badge i {
+            font-size: 0.8rem;
+        }
+        .category-badge span {
+            opacity: 0.9;
+        }
+        .table {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .table thead th {
+            background: #f8f9fa;
+            border-bottom: 2px solid #e0e0e0;
+            color: #2d3436;
+            font-weight: 600;
+            padding: 1rem;
+        }
+        .table tbody td {
+            padding: 1rem;
+            vertical-align: middle;
+        }
+        .table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+        .expense-badge {
+            background: linear-gradient(135deg, #6c5ce7 0%, #a363d9 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        .page-title {
+            color: #2d3436;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        .page-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(135deg, #6c5ce7 0%, #a363d9 100%);
+            border-radius: 3px;
+        }
+        .analytics-card {
+            margin-bottom: 2rem;
+        }
+        
+        .chart-container {
+            position: relative;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .chart-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .top-expenses-table {
+            font-size: 0.9rem;
+        }
+        
+        .top-expenses-table th {
+            font-weight: 600;
+            color: #2d3436;
+        }
+        
+        .insight-card {
+            background: linear-gradient(135deg, #6c5ce7 0%, #a363d9 100%);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+        
+        .insight-card h6 {
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .insight-card p {
+            margin-bottom: 0;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <h1 class="page-title">Expense Tracker</h1>
+        
+        <!-- Add Expense Form -->
+        <div class="card mb-4">
+            <div class="card-body p-4">
+                <h5 class="card-title">
+                    <i class="bi bi-plus-circle me-2"></i>Add New Expense
+                </h5>
+                <form action="{{ url_for('add_expense') }}" method="POST">
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label for="date" class="form-label">Date</label>
+                            <input type="date" class="form-control" id="date" name="date" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="category" class="form-label">Category</label>
+                            <select class="form-select" id="category" name="category" required>
+                                <option value="">Select Category</option>
+                                <option value="Groceries">Groceries</option>
+                                <option value="Transport">Transport</option>
+                                <option value="Entertainment">Entertainment</option>
+                                <option value="Vegetables">Vegetables</option>
+                                <option value="Fruits">Fruits</option>
+                                <option value="Shopping">Shopping</option>
+                                <option value="Utilities">Utilities</option>
+                                <option value="Health & Fitness">Health & Fitness</option>
+                                <option value="Stationary">Stationary</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="amount" class="form-label">Amount</label>
+                            <div class="input-group">
+                                <span class="input-group-text">₹</span>
+                                <input type="number" step="0.01" class="form-control" id="amount" name="amount" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="description" class="form-label">Description (Optional)</label>
+                            <input type="text" class="form-control" id="description" name="description">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-4">
+                        <i class="bi bi-plus-circle me-2"></i>Add Expense
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="summary-card">
+                    <h5 class="card-title">
+                        <i class="bi bi-cash-stack me-2"></i>Total Expenses
+                    </h5>
+                    <h2 class="mb-0">₹{{ "%.2f"|format(total_expenses) }}</h2>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body p-4">
+                        <h5 class="card-title">
+                            <i class="bi bi-pie-chart me-2"></i>Category Breakdown
+                        </h5>
+                        <div class="d-flex flex-wrap gap-2">
+                            {% for category, amount in category_totals.items() %}
+                            <div class="category-badge">
+                                <i class="bi bi-tag me-1"></i>
+                                {{ category }}
+                                <span class="ms-1">₹{{ "%.2f"|format(amount) }}</span>
+                                <span class="ms-1">({{ "%.1f"|format(amount/total_expenses*100) }}%)</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="mt-3">
+                            <small class="text-muted">
+                                <i class="bi bi-info-circle me-1"></i>
+                                Total Categories: {{ category_totals|length }}
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Section -->
+        <div class="card mb-4">
+            <div class="card-body p-4">
+                <h5 class="card-title">
+                    <i class="bi bi-graph-up me-2"></i>Expense Analytics
+                </h5>
+                
+                <!-- Charts Row -->
+                <div class="row">
+                    <!-- Monthly Expenses Chart -->
+                    <div class="col-md-6 analytics-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-title">Monthly Expenses Trend</h6>
+                                <div class="chart-container">
+                                    <img src="data:image/png;base64,{{ analytics.monthly_chart }}" alt="Monthly Expenses Chart" class="chart-image">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Category Distribution Chart -->
+                    <div class="col-md-6 analytics-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-title">Expense Distribution by Category</h6>
+                                <div class="chart-container">
+                                    <img src="data:image/png;base64,{{ analytics.category_chart }}" alt="Category Distribution Chart" class="chart-image">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Daily Expenses Chart -->
+                <div class="analytics-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">Daily Expenses (Last 30 Days)</h6>
+                            <div class="chart-container">
+                                <img src="data:image/png;base64,{{ analytics.daily_chart }}" alt="Daily Expenses Chart" class="chart-image">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Top Expenses and Insights -->
+                <div class="row">
+                    <!-- Top Expenses -->
+                    <div class="col-md-7">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-title">Top 5 Highest Expenses</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-sm top-expenses-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Category</th>
+                                                <th>Description</th>
+                                                <th>Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for expense in analytics.top_expenses %}
+                                            <tr>
+                                                <td>{{ expense.Date }}</td>
+                                                <td><span class="badge bg-secondary">{{ expense.Category }}</span></td>
+                                                <td>{{ expense.Description }}</td>
+                                                <td>₹{{ "%.2f"|format(expense.Amount) }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Insights -->
+                    <div class="col-md-5">
+                        <div class="insight-card">
+                            <h6><i class="bi bi-lightbulb me-2"></i>Spending Insights</h6>
+                            <p>Highest spending category: <strong>{{ analytics.category_totals.labels[0] if analytics.category_totals.labels else 'N/A' }}</strong></p>
+                            <p>Average daily expense: <strong>₹{{ "%.2f"|format(total_expenses / analytics.daily_expenses.data|length if analytics.daily_expenses.data else 0) }}</strong></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Monthly Breakdown -->
+                <div class="analytics-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">
+                                <i class="bi bi-calendar-check me-2"></i>Monthly Expense Breakdown
+                            </h6>
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Month</th>
+                                            <th>Total</th>
+                                            <th>Categories</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for month in analytics.monthly_breakdown %}
+                                        <tr>
+                                            <td>{{ month.month }}</td>
+                                            <td>₹{{ "%.2f"|format(month.total) }}</td>
+                                            <td>
+                                                <div class="d-flex flex-wrap gap-1">
+                                                    {% for category, amount in month.categories.items() %}
+                                                    <span class="badge bg-secondary">
+                                                        {{ category }}: ₹{{ "%.2f"|format(amount) }}
+                                                    </span>
+                                                    {% endfor %}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Expenses List -->
+        <div class="card">
+            <div class="card-body p-4">
+                <h5 class="card-title">
+                    <i class="bi bi-list-check me-2"></i>Recent Expenses
+                </h5>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Category</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for expense in expenses|sort(attribute='Date', reverse=true) %}
+                            <tr>
+                                <td>{{ expense.Date }}</td>
+                                <td>
+                                    <span class="expense-badge">{{ expense.Category }}</span>
+                                </td>
+                                <td>{{ expense.Description }}</td>
+                                <td>₹{{ "%.2f"|format(expense.Amount) }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
