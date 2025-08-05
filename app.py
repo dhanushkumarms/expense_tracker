@@ -137,6 +137,5 @@ def add_expense():
     save_data(df, EXPENSE_CSV)
     return redirect(url_for('expense'))
 
-port = int(os.environ.get('PORT', 5000))  # Use Render's port if available
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=port, debug=True)
+    app.run(debug=True)
