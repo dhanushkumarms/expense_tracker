@@ -30,9 +30,9 @@ TrackX is a simple and powerful **expense tracking application** designed to hel
 
 <div align="center">
 
-| ![Landing Page](screenshots/landingpage.png) | ![Dashboard](screenshots/dashboard.png) | ![Add Expense](screenshots/add_expense.png) |
-|----------------------------------------------|-----------------------------------------|---------------------------------------------|
-| ![Expense List](screenshots/expense_list.png) | ![Reports](screenshots/reports.png) | ![Settings](screenshots/settings.png) |
+| ![Dashboard - Expense](screenshots/expense.png)  | ![Dashboard - Income](screenshots/income.png) |
+|----------------------------------------------|-----------------------------------------|
+| ![Landing Page](screenshots/landing_page.png)| ![Reports](screenshots/summary.png) |
 
 </div>
 
