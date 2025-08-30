@@ -1,6 +1,8 @@
 # 🧾 TrackX - Smart Expense Tracker
 
-![TrackX Logo](screenshots/logo.png) 
+<p align="center">
+  <img src="screenshots/trackX_logo.png" alt="trackX Logo" width="1000"/>
+</p> 
 
 ![trackX](https://img.shields.io/badge/trackX-ACTIVE-leafgreen?style=for-the-badge)
 
